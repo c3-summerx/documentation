@@ -43,8 +43,15 @@ config.set("hbase.zookeeper.property.clientPort", "2181");
 config.set("zookeeper.znode.parent", "/hbase");
 (More code exmaples can be checked out [here](https://community.hortonworks.com/articles/120858/connecting-to-kerberos-secured-hbase-cluster-from.html)).
 ```
-5. For Kerberized cluster, a **krb5.conf** file is needed, where all the hostnames/realms being defined. Note that you can only setup the default kdc `java.security.krb5.kdc` and default realm `java.security.krb5.kdc` programmatically, anything beyond this are not supported in native JDK. Most of time, if you want to configure more than one kdc/realm, a **krb5.conf** is unavoided.
-6. UserGroupInformation (UGI) - it's one place for almost all Kerberos/User authentication to live. It's used in the entire Hadoop stack. A few things to know about it:
+5. To connect to kerberized cluster, setup below configurations additionally:
+```
+config.set("hadoop.security.authentication", "kerberos");
+config.set("hbase.security.authentication", "kerberos");
+config.set("hbase.master.kerberos.principal", "some principal");
+config.set("hbase.regionserver.kerberos.principal", "some principal");
+```
+6. For Kerberized cluster, a **krb5.conf** file is needed, where all the hostnames/realms being defined. Note that you can only setup the default kdc `java.security.krb5.kdc` and default realm `java.security.krb5.kdc` programmatically, anything beyond this are not supported in native JDK. Most of time, if you want to configure more than one kdc/realm, a **krb5.conf** is unavoided.
+7. UserGroupInformation (UGI) - it's one place for almost all Kerberos/User authentication to live. It's used in the entire Hadoop stack. A few things to know about it:
 * It's a singleton. Once initialized, it stays initialized and cannot be reset. However, there is actually a UGI.reset() call, but it is package scoped and purely to allow tests to reset the information.
 * It uses some 'magic' calls to look at local filesystem to find the current user/principal.
 
