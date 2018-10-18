@@ -58,8 +58,7 @@ System.setProperty("java.security.krb5.conf", "location/to/krb5.conf");
 * It's a singleton. Once initialized, it stays initialized and cannot be reset. However, there is actually a UGI.reset() call, but it is package scoped and purely to allow tests to reset the information.
 * It uses some 'magic' calls to look at local filesystem to find the current user/principal.  
 Core operations:  
-**loginUserFromKeytab(user, keytab)** 
-
+**loginUserFromKeytab(user, keytab)**  
 **checkTGTAndReloginFromKeytab()**
 
 to be continued.
